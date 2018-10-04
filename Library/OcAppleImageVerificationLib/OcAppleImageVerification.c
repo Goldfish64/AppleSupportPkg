@@ -71,7 +71,7 @@ BuildPeContext (
   EFI_IMAGE_DOS_HEADER             *DosHdr              = NULL;
   EFI_IMAGE_OPTIONAL_HEADER_UNION  *PeHdr               = NULL;
   UINT16                           PeHdrMagic           = 0;
-  CONST UINT32                     HeaderWithoutDataDir = 0;
+  UINT32                           HeaderWithoutDataDir = 0;
   UINT32                           SectionHeaderOffset  = 0;
   EFI_IMAGE_SECTION_HEADER         *SectionCache        = NULL;
   UINT32                           Index                = 0;
@@ -114,7 +114,7 @@ BuildPeContext (
     PeHdr = (EFI_IMAGE_OPTIONAL_HEADER_UNION *) ((UINT8 *) Image
                                                  + DosHdr->e_lfanew);
 
-    if (OcOverflowSubU32 (ImageSize, sizeof (EFI_IMAGE_OPTIONAL_HEADER_UNION), &Temp) {
+    if (OcOverflowSubU32 (ImageSize, sizeof (EFI_IMAGE_OPTIONAL_HEADER_UNION), &Temp)) {
       DEBUG ((DEBUG_WARN, "Underflow detected!\n"));
       return EFI_INVALID_PARAMETER;
     }
@@ -234,7 +234,7 @@ BuildPeContext (
                            sizeof (EFI_IMAGE_DATA_DIRECTORY) *
                            EFI_IMAGE_NUMBER_OF_DIRECTORY_ENTRIES;
     
-    if (OcOverflowSubU32 (PeHdr->Pe32Plus.OptionalHeader.SizeOfOptionalHeader, HeaderWithoutDataDir, &Temp)) {
+    if (OcOverflowSubU32 (PeHdr->Pe32Plus.FileHeader.SizeOfOptionalHeader, HeaderWithoutDataDir, &Temp)) {
       DEBUG ((DEBUG_WARN, "Underflow detected!\n"));
       return EFI_INVALID_PARAMETER;
     }
